@@ -4,11 +4,8 @@
  */
 // Wait for the DOM to be fully loaded before running the script
 document.addEventListener('DOMContentLoaded', () => {
-
-    // --- !! IMPORTANT !! ---
-    // PASTE YOUR GEMINI API KEY HERE FOR DIRECT FRONTEND TESTING
-    // DO NOT put this on a public website. Your key will be stolen.
-    const YOUR_GEMINI_API_KEY = "AIzaSyCsojM8mXft3bGVqeVIFw0hyBWWlB3-udM";
+    // PASTE_YOUR_GEMINI_API_KEY_HERE
+    const YOUR_GEMINI_API_KEY = "PASTE_YOUR_GEMINI_API_KEY_HERE";
     // ----------------------
 
 
@@ -24,9 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const contactForm = document.getElementById('contact-form');
     const contactButton = document.getElementById('contact-button');
     const contactStatus = document.getElementById('contact-status-message');
-
-    // Backend API URL (This is for the backend, which we are bypassing)
-    // const API_URL = 'http://localhost:5001';
 
     // --- Summarizer Logic ---
     // Check if all summarizer elements exist before adding listener
@@ -223,4 +217,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
+
 
