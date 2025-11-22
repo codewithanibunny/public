@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Summarizer - Aurora</title>
+    <!-- Google Fonts: Lexend (Headings) and Roboto Flex (Body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600&family=Roboto+Flex:opsz,wght@8..144,300;8..144,400&display=swap" rel="stylesheet">
+    <!-- Link to your CSS file for animations -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Load TailwindCSS utility classes -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Customizations for Tailwind to use our fonts
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Roboto Flex', 'sans-serif'],
+                        heading: ['Lexend', 'sans-serif'],
+                    },
+                    colors: {
+                        'brand-purple': '#a259ff',
+                        'brand-pink': '#ff71d1',
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<!-- 
+  FIX: 
+  - Removed overflow-hidden to allow scrolling.
+  - Added 'min-h-screen', 'flex', 'flex-col', 'items-center', 'justify-start'
+    to center the content vertically (at the start) and horizontally.
+-->
+<body class="bg-black text-gray-200 font-sans antialiased min-h-screen w-full flex flex-col items-center justify-start p-4 md:p-8 relative">
+
+    <!-- Animated Aurora Background -->
+    <div class="aurora-background">
+        <div class="aurora-light aurora-1"></div>
+        <div class="aurora-light aurora-2"></div>
+        <div class="aurora-light aurora-3"></div>
+    </div>
+
+    <!-- Main Content Container -->
+    <!-- 
+      This 'z-10' ensures the content stays on top of the background animation.
+      'w-full max-w-3xl' keeps it responsive.
+    -->
+    <main class="w-full max-w-3xl z-10 flex flex-col space-y-12">
+        
+        <!-- Header -->
+        <header class="text-center mt-8">
+            <h1 class="font-heading text-4xl md:text-5xl font-semibold bg-gradient-to-r from-brand-purple to-brand-pink bg-clip-text text-transparent mb-2">
+                AI Summarizer
+            </h1>
+            <p class="text-lg text-gray-400">Paste your text below for a quick summary.</p>
+        </header>
+
+        <!-- Summarizer Card -->
+        <section id="summarizer-card" class="bg-gray-900 bg-opacity-70 backdrop-blur-md rounded-2xl shadow-2xl p-6 md:p-10 border border-gray-700">
+            
+            <!-- Input Area -->
+            <div class="mb-6">
+                <label for="text-to-summarize" class="block text-sm font-medium text-gray-300 mb-2">Your Text</label>
+                <textarea 
+                    id="text-to-summarize" 
+                    rows="10" 
+                    class="w-full p-4 rounded-lg bg-gray-800 border border-gray-700 text-gray-200 focus:ring-2 focus:ring-brand-purple focus:border-brand-purple transition-all duration-200 placeholder-gray-500" 
+                    placeholder="Paste a long article, notes, or any text you want to summarize..."
+                ></textarea>
+            </div>
+
+            <!-- Action Button -->
+            <button 
+                id="summarize-button" 
+                class="w-full text-lg font-semibold text-white bg-gradient-to-r from-brand-purple to-brand-pink hover:from-brand-purple/90 hover:to-brand-pink/90 rounded-lg py-3 px-6 transition-all duration-300 ease-in-out shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-brand-purple focus:ring-offset-2 focus:ring-offset-gray-900 transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+                <span id="btn-text">Summarize</span>
+                <span id="loading-spinner" class="hidden">
+                    <svg class="animate-spin h-5 w-5 inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Summarizing...
+                </span>
+            </button>
+
+            <!-- Error Message Box -->
+            <div id="error-message" class="mt-6 p-4 bg-red-900 bg-opacity-80 border border-red-700 text-red-100 rounded-lg hidden transition-all duration-300">
+                <!-- Error content will be set by JS -->
+            </div>
+
+            <!-- Result Area -->
+            <div id="result-container" class="mt-8 hidden fade-in">
+                <h2 class="font-heading text-2xl font-semibold text-gray-100 mb-4">Summary</h2>
+                <div id="summary-output" class="w-full p-4 rounded-lg bg-gray-800 border border-gray-700 text-gray-300 min-h-[100px] whitespace-pre-wrap"></div>
+            </div>
+        </section>
+
+        <!-- Contact Me Card -->
+        <section id="contact-card" class="bg-gray-900 bg-opacity-70 backdrop-blur-md rounded-2xl shadow-2xl p-6 md:p-10 border border-gray-700 mb-12">
+            <h2 class="font-heading text-3xl font-semibold text-center mb-2">Contact Me</h2>
+            <p class="text-center text-gray-400 mb-6">Have questions? Send me a message.</p>
+
+            <!-- Formsubmit.co Form -->
+            <form 
+                id="contact-form" 
+                action="https://formsubmit.co/anibunny2387@gmail.com" 
+                method="POST"
+                class="space-y-4"
+            >
+                <!-- Formsubmit settings -->
+                <input type="hidden" name="_captcha" value="false">
+                <!-- Set this to your live website URL when you deploy -->
+                <input type="hidden" name="_next" value="http://localhost:5500/thanks.html">
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-300 mb-2">Name</label>
+                        <input 
+                            type="text" 
+                            id="name" 
+                            name="name" 
+                            required 
+                            class="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 text-gray-200 focus:ring-2 focus:ring-brand-purple focus:border-brand-purple transition-all duration-200 placeholder-gray-500" 
+                            placeholder="Your Name"
+                        >
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-300 mb-2">Email</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            required 
+                            class="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 text-gray-200 focus:ring-2 focus:ring-brand-purple focus:border-brand-purple transition-all duration-200 placeholder-gray-500" 
+                            placeholder="Your Email"
+                        >
+                    </div>
+                </div>
+
+                <div>
+                    <label for="message" class="block text-sm font-medium text-gray-300 mb-2">Message</label>
+                    <textarea 
+                        id="message" 
+                        name="message" 
+                        rows="5" 
+                        required 
+                        class="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 text-gray-200 focus:ring-2 focus:ring-brand-purple focus:border-brand-purple transition-all duration-200 placeholder-gray-500" 
+                        placeholder="Your Message..."
+                    ></textarea>
+                </div>
+
+                <button 
+                    type="submit" 
+                    id="contact-button"
+                    class="w-full text-lg font-semibold text-white bg-gradient-to-r from-brand-purple to-brand-pink hover:from-brand-purple/90 hover:to-brand-pink/90 rounded-lg py-3 px-6 transition-all duration-300 ease-in-out shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-brand-purple focus:ring-offset-2 focus:ring-offset-gray-900 transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                    Send Message
+                </button>
+
+                <!-- Status Message -->
+                <div id="contact-status-message" class="text-center mt-4 hidden fade-in">
+                    <!-- JS will set content and color -->
+                </div>
+            </form>
+        </section>
+
+    </main>
+
+    <!-- Link to your JavaScript file -->
+    <script src="app.js"></script>
+</body>
+</html>

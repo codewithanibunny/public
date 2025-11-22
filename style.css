@@ -1,0 +1,45 @@
+/*
+ *   Copyright (c) 2025 
+ *   All rights reserved.
+ */
+/* This file adds the animations referenced in your index.html.
+*/
+
+/* 1. Loading Spinner Animation */
+@keyframes spinner-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  width: 2.5rem; /* 40px */
+  height: 2.5rem; /* 40px */
+  border: 4px solid rgba(255, 255, 255, 0.2);
+  border-top-color: #60a5fa; /* blue-400 */
+  border-radius: 50%;
+  animation: spinner-rotate 0.8s linear infinite;
+}
+
+/* 2. Fade-in Animation for the cards */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  /* Apply the fade-in animation, lasting 0.5s, 
+    using an ease-out timing function.
+  */
+  animation: fade-in 0.5s ease-out forwards;
+}
+
